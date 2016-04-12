@@ -9,13 +9,11 @@ import argparse
 def start(args):
     
 
-
 def stop(args):
     
 
 def show(args):
     
-
 
 def clear(args):
 
@@ -25,17 +23,20 @@ def main():
 
     parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
 
-    parser.add_argument('start', action='store_true',
+
+    parser.add_argument('start',
                    help='')
 
-    parser.add_argument('stop', dest='accumulate', action='store_true',
+    parser.add_argument('stop',
                    help='')
 
-    parser.add_argument('show', dest='accumulate', action='store_true',
+    parser.add_argument('show',
                    help='')
 
-    parser.add_argument('clear', dest='accumulate', action='store_true',
+    parser.add_argument('clear', 
                    help='')
+
+    parser.add_argument('--version', action='version', version='1.0.0')
 
 
     usage = """usage: sugar.py [--help] <command> [<args>]
@@ -64,7 +65,14 @@ def main():
 if __name__ == '__main__':
     main()
     args = parser.parse_args()
-    args.func(args)  # call the default function
+
+    # if an argument called start was passed, execute the start function.
+    if args == 'start':
+        start()
+    elif args == 'stop':
+        stop()
+
+    # args.func(args)  # call the default function
 
 
 
