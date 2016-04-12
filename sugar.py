@@ -2,21 +2,28 @@
 
 from time import strftime
 from calendar import month_abbr
-from optparse import OptionParser
+import argparse
+import sys
 
 def main():
 
-    parser = OptionParser()
+    parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
 
-    parser.add_option("-f", "--file", dest="filename",
-                  help="write report to FILE", metavar="FILE")
+    parser.add_argument('start', action='store_true',
+                   help='an integer for the accumulator')
 
-    parser.add_option("-q", "--quiet",
-                  action="store_false", dest="verbose", default=True,
-                  help="don't print status messages to stdout")
+    parser.add_argument('stop', dest='accumulate', action='store_true',
+                   help='sum the integers (default: find the max)')
+
+    parser.add_argument('show', dest='accumulate', action='store_true',
+                   help='sum the integers (default: find the max)')
+
+    parser.add_argument('clear', dest='accumulate', action='store_true',
+                   help='sum the integers (default: find the max)')
+
 
     usage = """usage: sugar.py [--help] <command> [<args>]
-            Log the amount of hours you code per day.
+            
 
             Commands:
 
@@ -24,21 +31,30 @@ def main():
             stop    stop the clock
             show    display all saved intervals
             clear   delete all saved intervals
-            'sugar <command> --help' to see how to use a command"""
+            'sugar.py <command> --help' to see how to use a command"""
 
 
     options, arguments = parser.parse_args()
 
     if len(args) != 1:
-        parser.error("wrong number of arguments")
-        print "\n\n------- spdeck-scrape: ERROR! --------"
-        print "      Usage:"
-        print "      Please specify an argument or or -h to display options (if desired):\n"
-        print "      Example: "
-        print "          sugar.py start\n\n"
+        parser.print_help()
 
-    print options
-    print args
 
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
