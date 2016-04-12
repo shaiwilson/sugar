@@ -2,6 +2,9 @@
 
 from time import strftime
 import argparse
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
+
 
 # constants
 DB_DIR = ".sugar"
@@ -12,29 +15,24 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
-# helpers
+db = SQLAlchemy()
 
-def start(args):
-    
+def connect_to_db(app):
+    """Connect the database to Flask app."""
 
-def stop(args):
-    
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/intervals'
+    db.app = app
+    db.init_app(app)
 
-def show(args):
-    
-
-def clear(args):
 
 # db control
 
 def punch_in():
-    """ """
-
+   """Given the start command, log timestamp information for the current work session."""
 
 
 def punch_out():
     """ """
-
 
 
 def show_intervals():
@@ -88,21 +86,39 @@ def main():
     if len(args) != 1:
         parser.print_help()
 
+def handle_input(args):
+    """Helper function to direct commands to corresponding actions."""
+
+    command = args
+
+    args = tokens[1:]
+
+    if command == "start":
+        punch_in()
+
+    elif command == "stop":
+        punch_out()
+
+    elif command == "show":
+        show_intervals()
+
+    elif command == "clear":
+        clear_intervals()
+
 
 
 
 
 if __name__ == '__main__':
     main()
+    app = Flask(__name__)
+    connect_to_db(app)
+
+    # handle input
     args = parser.parse_args()
+    handle_input(args)
 
-    # if an argument called start was passed, execute the start function.
-    if args == 'start':
-        start()
-    elif args == 'stop':
-        stop()
-
-    # args.func(args)  # call the default function
+    db.session.close()
 
 
 
