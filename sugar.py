@@ -12,6 +12,8 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
+# helpers
+
 def start(args):
     
 
@@ -23,6 +25,24 @@ def show(args):
 
 def clear(args):
 
+# db control
+
+def punch_in():
+    """ """
+
+
+
+def punch_out():
+    """ """
+
+
+
+def show_intervals():
+    """ """
+
+
+def clear_intervals():
+    """ """
 
 
 def main():
@@ -64,8 +84,12 @@ def main():
 
     options, arguments = parser.parse_args()
 
+    # show usage text for commands without args
     if len(args) != 1:
         parser.print_help()
+
+
+
 
 
 if __name__ == '__main__':
@@ -79,8 +103,6 @@ if __name__ == '__main__':
         stop()
 
     # args.func(args)  # call the default function
-
-
 
 
 
