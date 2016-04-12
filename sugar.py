@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 
 from time import strftime
-from calendar import month_abbr
 import argparse
 
-
+# constants
+DB_DIR = ".sugar"
+DB_FILE = "intervals.db"
+DATE_DB_FORMAT = "%Y%m%d"
+DATE_PRINT_FORMAT = "%b %d, %Y"
+TIME_DB_FORMAT = "%H:%M"
+TIME_PRINT_FORMAT = "%I:%M %p"
+SECS_IN_HOUR = 60 * 60
 
 def start(args):
     
