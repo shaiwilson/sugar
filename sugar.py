@@ -3,23 +3,39 @@
 from time import strftime
 from calendar import month_abbr
 import argparse
-import sys
+
+
+
+def start(args):
+    
+
+
+def stop(args):
+    
+
+def show(args):
+    
+
+
+def clear(args):
+
+
 
 def main():
 
     parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
 
     parser.add_argument('start', action='store_true',
-                   help='an integer for the accumulator')
+                   help='')
 
     parser.add_argument('stop', dest='accumulate', action='store_true',
-                   help='sum the integers (default: find the max)')
+                   help='')
 
     parser.add_argument('show', dest='accumulate', action='store_true',
-                   help='sum the integers (default: find the max)')
+                   help='')
 
     parser.add_argument('clear', dest='accumulate', action='store_true',
-                   help='sum the integers (default: find the max)')
+                   help='')
 
 
     usage = """usage: sugar.py [--help] <command> [<args>]
@@ -27,11 +43,16 @@ def main():
 
             Commands:
 
-            start   start the clock
-            stop    stop the clock
-            show    display all saved intervals
-            clear   delete all saved intervals
-            'sugar.py <command> --help' to see how to use a command"""
+                sugar.py start   start the clock
+                sugar.py stop    stop the clock
+                sugar.py show    display all saved intervals
+                sugar.py clear   delete all saved intervals
+                'sugar.py <command> --help' to see how to use a command
+
+
+            Options:
+                -h --help     Show this screen.
+            """
 
 
     options, arguments = parser.parse_args()
@@ -42,6 +63,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    args = parser.parse_args()
+    args.func(args)  # call the default function
 
 
 
@@ -57,4 +80,3 @@ if __name__ == '__main__':
 
 
 
-    
