@@ -32,16 +32,18 @@ def punch_in():
 
 
 def punch_out():
-    """ """
+    """Given the stop command, log timestamp information for the current work session."""
 
 
 def show_intervals():
-    """ """
+    """Given the show command, display daily information for the current work session."""
 
 
 def clear_intervals():
-    """ """
+    """Given the clear command, clear log information of work sessions."""
 
+    # clear db
+    print "Cleared all intervals"
 
 def main():
 
@@ -80,7 +82,7 @@ def main():
             """
 
 
-    options, arguments = parser.parse_args()
+    # options, arguments = parser.parse_args()
 
     # show usage text for commands without args
     if len(args) != 1:
@@ -90,8 +92,6 @@ def handle_input(args):
     """Helper function to direct commands to corresponding actions."""
 
     command = args
-
-    args = tokens[1:]
 
     if command == "start":
         punch_in()
@@ -107,8 +107,6 @@ def handle_input(args):
 
 
 
-
-
 if __name__ == '__main__':
     main()
     app = Flask(__name__)
@@ -119,8 +117,6 @@ if __name__ == '__main__':
     handle_input(args)
 
     db.session.close()
-
-
 
 
 
