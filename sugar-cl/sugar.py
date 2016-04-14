@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from time import strftime
+from datetime import datetime
 import argparse
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -42,6 +43,15 @@ def make_new_user(first_name, last_name, github):
 
 def punch_in():
    """Given the start command, log timestamp information for the current work session."""
+
+   # first make sure they did not already punch in 
+
+   now = datetime.now()
+   current_time = now.strftime(TIME_DB_FORMAT)
+   current_date = now.strftime(DATE_DB_FORMAT)
+   print_format = now.strftime(TIME_PRINT_FORMAT)
+
+   print "Punched in at %d" %(print_format)
 
 
 def punch_out():

@@ -9,3 +9,5 @@
 
 # virtual enviornment
 env
+
+.DS_Store
