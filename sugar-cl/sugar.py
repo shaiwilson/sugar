@@ -49,6 +49,8 @@ def main():
 
     parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
 
+    parser.add_argument('setup',
+                   help='')
 
     parser.add_argument('start',
                    help='')

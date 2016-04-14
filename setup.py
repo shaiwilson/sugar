@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(
-    name='sugar',
+    name='cl-sugar',
     package_dir = {'': 'src'},
     packages=[''],
     version='1.0',
