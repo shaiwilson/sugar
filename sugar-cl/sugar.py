@@ -28,6 +28,16 @@ def connect_to_db(app):
 
 # db control
 
+def create_new_database():
+    """Crete a new databse. """
+
+
+    Students = """CREATE TABLE Students (
+    username VARCHAR(30),
+    last_name VARCHAR(30),
+    github VARCHAR(30)
+    );"""
+
 def make_new_user(first_name, last_name, github):
     """Add a new user and print confirmation.
 
@@ -51,11 +61,11 @@ def punch_in():
    current_date = now.strftime(DATE_DB_FORMAT)
    print_format = now.strftime(TIME_PRINT_FORMAT)
 
-    # change "date " in intervals db to "date_time"
-    QUERY = """INSERT INTO Intervals (date_time, start_time)
+   # change "date " in intervals db to "date_time"
+   QUERY = """INSERT INTO Intervals (date_time, start_time)
                VALUES (:date_time, :start_time)"""
 
-    db_cursor = db.session.execute(QUERY, {'date_time': current_time, 'start_time': current_date})
+   db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'start_time': current_time})
 
    print "Punched in at %s" %(print_format)
 
@@ -63,10 +73,26 @@ def punch_in():
 def punch_out():
     """Given the stop command, log timestamp information for the current work session."""
 
+   now = datetime.now()
+   current_time = now.strftime(TIME_DB_FORMAT)
+   current_date = now.strftime(DATE_DB_FORMAT)
+   print_format = now.strftime(TIME_PRINT_FORMAT)
 
-def show_intervals():
-    """Given the show command, display daily information for the current work session."""
+   # change "date " in intervals db to "date_time"
+   QUERY = """INSERT INTO Intervals (date_time, end_time)
+               VALUES (:date_time, :end_time)"""
 
+   db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'end_time': current_time})
+
+   print "Punched in at %s" %(print_format)
+
+def show_intervals(timeframe):
+    """Given the show command, display daily or weekly information for the current work session."""
+    if timeframe == 1:
+            
+
+    elif timeframe == 2:
+            
 
 def clear_intervals():
     """Given the clear command, clear log information of work sessions."""
@@ -104,7 +130,8 @@ def handle_input(args):
         punch_out()
 
     elif command == "show":
-        show_intervals()
+        timeframe = raw_input("enter 1 to see daily sum or 2 to see weekly sum")
+        show_intervals(timeframe)
 
     elif command == "clear":
         clear_intervals()
