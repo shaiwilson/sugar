@@ -51,7 +51,13 @@ def punch_in():
    current_date = now.strftime(DATE_DB_FORMAT)
    print_format = now.strftime(TIME_PRINT_FORMAT)
 
-   print "Punched in at %d" %(print_format)
+    # change "date " in intervals db to "date_time"
+    QUERY = """INSERT INTO Intervals (date_time, start_time)
+               VALUES (:date_time, :start_time)"""
+
+    db_cursor = db.session.execute(QUERY, {'date_time': current_time, 'start_time': current_date})
+
+   print "Punched in at %s" %(print_format)
 
 
 def punch_out():
