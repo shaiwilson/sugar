@@ -116,19 +116,19 @@ def main():
     parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
 
     parser.add_argument('setup',
-                   help='')
+                   help='Give your username, first name, and github to sugar')
 
     parser.add_argument('start',
-                   help='')
+                   help='Punch in to the clock, you are working now!')
 
     parser.add_argument('stop',
-                   help='')
+                   help='Punch out, but did you finish all your work?')
 
     parser.add_argument('show',
-                   help='')
+                   help='Show the amount of hours you worked by day or week')
 
     parser.add_argument('clear', 
-                   help='')
+                   help='Clear your work log history')
 
     parser.add_argument('--version', action='version', version='1.0.0')
 
