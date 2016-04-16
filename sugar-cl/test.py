@@ -11,7 +11,6 @@ def goodbye(args):
     print('Goodbye, {0}!'.format(args.timeframe))
 
 
-
 def get_parser():
     """ Get parser object for script sugar.py """
 
@@ -22,7 +21,9 @@ def get_parser():
     subparsers = parser.add_subparsers()
 
     parser.add_argument('--version', action='version', version='1.0.0')
-    parser.add_argument('-s', '--start')
+    parser.add_argument('-s', '--start',
+                        
+                        help="")
 
     setup_parser = subparsers.add_parser('setup')
     setup_parser.add_argument('username', help='Give your username to sugar')  # add the name argument
@@ -50,11 +51,15 @@ def get_parser():
               -h --help     Show this screen.
           """
 
+
+    return parser
+
+
 if __name__ == '__main__':
-    args = parser.parse_args()
+    args = get_parser().parse_args()
 
     # show usage text for commands without args
-    if len(args) != 1:
-        parser.print_help()
+    # if len(args) != 1:
+    #     parser.print_help()
 
     args.func(args)  # call the default function
