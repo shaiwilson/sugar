@@ -41,6 +41,22 @@ def punch_in():
 
   print "Punched in at %s" %(print_format)
 
+def punch_out():
+  """Given the stop command, log timestamp information for the current work session."""
+
+  now = datetime.now()
+  current_time = now.strftime(TIME_DB_FORMAT)
+  current_date = now.strftime(DATE_DB_FORMAT)
+  print_format = now.strftime(TIME_PRINT_FORMAT)
+
+  # change "date " in intervals db to "date_time"
+  # QUERY = """INSERT INTO Intervals (date_time, end_time)
+  #             VALUES (:date_time, :end_time)"""
+
+  # db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'end_time': current_time})
+
+  print "Punched out at %s" %(print_format)
+
 def handle_input(args):
     """ """
     
@@ -49,26 +65,9 @@ def handle_input(args):
     if command == "start":
         punch_in()
 
-    elif command == "new_student":
-        if len(args) != 3:
-            print "Invalid, please use: new_student [first] [last] [github]"
-        else:
-            first_name, last_name, github = args  # unpack!
-            make_new_student(first_name, last_name, github)
+    elif command == "stop":
+        punch_out()
 
-    elif command == "project":
-        if len(args) != 1:
-            print "Invalid, please use: project [title]"
-        else:
-            title = args[0]
-            get_project_by_title(title)
-
-    elif command == "grade":
-        if len(args) != 2:
-            print "Invalid, please use: grade [github] [title]"
-        else:
-            github, title = args
-            get_grade_by_github_title(github, title)
 
     elif command == "assign_grade":
         if len(args) != 3:
