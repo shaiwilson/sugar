@@ -16,7 +16,7 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
-db = SQLAlchemy()
+# db = SQLAlchemy()
 
 def connect_to_db(app):
     """Connect the database to Flask app."""
@@ -38,18 +38,17 @@ def create_new_database():
     github VARCHAR(30)
     );"""
 
-def make_new_user(first_name, last_name, github):
+def make_new_user(args):
     """Add a new user and print confirmation.
 
     Given a first name, last name, and GitHub account, add user to the
     database and print a confirmation message.
     """
+    print('Hi, {0}!'.format(args.name))
 
-    QUERY = """INSERT INTO Students VALUES (:first_name, :last_name, :github)"""
-    db_cursor = db.session.execute(QUERY, {'first_name': first_name, 'last_name': last_name, 'github': github})
-    db.session.commit()
-
-    print "Hi %s %s, you're setup to start using sugar! :-)" % (first_name, last_name)
+    # QUERY = """INSERT INTO Students VALUES (:first_name, :last_name, :github)"""
+    # db_cursor = db.session.execute(QUERY, {'first_name': first_name, 'last_name': last_name, 'github': github})
+    # db.session.commit()
 
 def punch_in():
   """Given the start command, log timestamp information for the current work session."""
@@ -152,8 +151,8 @@ subparsers = parser.add_subparsers()
 # handle_input(args)
 
 setup_parser = subparsers.add_parser('setup')
-setup_parser.add_argument('setup',
-             help='Give your username, first name, and github to sugar')
+setup_parser.add_argument('username',
+             help='Give your username to sugar')
 setup_parser.set_defaults(func=make_new_user)
 
 
@@ -196,14 +195,14 @@ usage = """usage: sugar.py [--help] <command> [<args>]
 
 
 if __name__ == '__main__':
-    app = Flask(__name__)
-    connect_to_db(app)
+    # app = Flask(__name__)
+    # connect_to_db(app)
 
     args = parser.parse_args()
     args.func(args) # call the default function
     
 
-    db.session.close()
+    # db.session.close()
 
 
 
