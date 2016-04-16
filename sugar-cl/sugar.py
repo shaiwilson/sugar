@@ -37,6 +37,9 @@ def connect_to_db(app):
 def get_hours_worked(start_time, end_time):
     return (end_time - start_time) / SECS_IN_HOUR
 
+def format_db_time(db_time):
+    new_print_time = datetime.strptime(db_time, TIME_DB_FORMAT).strftime(TIME_PRINT_FORMAT)
+    return new_print_time
 
 def hello(args):
     """Add a new user and print confirmation.
@@ -56,6 +59,10 @@ def showLog(args):
     """Given the show command, display daily or weekly 
     information for the current work session."""
 
+    total_amount = args.amount
+
+    QUERY = """SELECT * FROM intervals ORDER BY date DESC LIMIT total_amount"""
+
     print('Goodbye, {0}!'.format(args.timeframe))
 
 def punch_in():
@@ -63,6 +70,16 @@ def punch_in():
   information for the current work session."""
 
   # first make sure they did not already punch in 
+  start_time = """ SELECT start_time
+                FROM Intervals 
+                ORDER BY id DESC 
+                LIMIT 1"""
+
+  
+  if start_time == None:
+    print ("You already punched in at {0}! ").format(start_time)
+    return
+
 
   now = datetime.now()
   current_time = now.strftime(TIME_DB_FORMAT)
@@ -87,7 +104,7 @@ def punch_out():
   current_date = now.strftime(DATE_DB_FORMAT)
   print_format = now.strftime(TIME_PRINT_FORMAT)
 
-  # change "date " in intervals db to "date_time"
+  # why does end date include seconds in the punch out function?
   QUERY = """UPDATE Intervals SET end_time = current_time 
                 WHERE date = current_date"""
               
@@ -95,6 +112,8 @@ def punch_out():
   db_cursor = db.session.execute(QUERY, {'date': current_date, 'end_time': current_time})
  
   db.session.commit()
+
+  # print the amount of hours worked
 
   print "Succesfully punched out at %s" %(print_format)
 
