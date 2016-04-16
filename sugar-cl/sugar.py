@@ -203,7 +203,7 @@ def get_parser():
 
 
 if __name__ == '__main__':
-    app = Flask(__name__)
+
     connect_to_db(app)
     
     if sys.argv == 'start' or 'stop' :

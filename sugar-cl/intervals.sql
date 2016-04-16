@@ -39,9 +39,9 @@ SET default_with_oids = false;
 
 CREATE TABLE intervals (
     id integer NOT NULL,
-    date date,
-    start_time time without time zone,
-    end_time time without time zone
+    date timestamp without time zone NOT NULL,
+    start_time timestamp without time zone,
+    end_time character varying(50) NOT NULL
 );
 
 
@@ -73,17 +73,46 @@ ALTER SEQUENCE intervals_id_seq OWNED BY intervals.id;
 --
 
 CREATE TABLE students (
-    username character varying(30)
+    student_id integer NOT NULL,
+    username character varying(50) NOT NULL
 );
 
 
 ALTER TABLE students OWNER TO shai;
 
 --
+-- Name: students_student_id_seq; Type: SEQUENCE; Schema: public; Owner: shai
+--
+
+CREATE SEQUENCE students_student_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE students_student_id_seq OWNER TO shai;
+
+--
+-- Name: students_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: shai
+--
+
+ALTER SEQUENCE students_student_id_seq OWNED BY students.student_id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: shai
 --
 
 ALTER TABLE ONLY intervals ALTER COLUMN id SET DEFAULT nextval('intervals_id_seq'::regclass);
+
+
+--
+-- Name: student_id; Type: DEFAULT; Schema: public; Owner: shai
+--
+
+ALTER TABLE ONLY students ALTER COLUMN student_id SET DEFAULT nextval('students_student_id_seq'::regclass);
 
 
 --
@@ -105,8 +134,15 @@ SELECT pg_catalog.setval('intervals_id_seq', 1, false);
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: shai
 --
 
-COPY students (username) FROM stdin;
+COPY students (student_id, username) FROM stdin;
 \.
+
+
+--
+-- Name: students_student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: shai
+--
+
+SELECT pg_catalog.setval('students_student_id_seq', 1, false);
 
 
 --
@@ -115,6 +151,14 @@ COPY students (username) FROM stdin;
 
 ALTER TABLE ONLY intervals
     ADD CONSTRAINT intervals_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: students_pkey; Type: CONSTRAINT; Schema: public; Owner: shai
+--
+
+ALTER TABLE ONLY students
+    ADD CONSTRAINT students_pkey PRIMARY KEY (student_id);
 
 
 --
