@@ -139,67 +139,68 @@ def handle_input(args):
 
 
 
-def main():
 
-    # handle input
-    parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
-    args = parser.parse_args()
-    subparsers = parser.add_subparsers()
+# handle input
+parser = argparse.ArgumentParser(description='Log the amount of hours you code per day.')
+subparsers = parser.add_subparsers()
 
 
-    # show usage text for commands without args
-    # if len(args) != 1:
-    #     parser.print_help()
+# show usage text for commands without args
+# if len(args) != 1:
+#     parser.print_help()
 
-    # handle_input(args)
+# handle_input(args)
 
-    setup_parser = subparsers
-    parser.add_argument('setup',
-                   help='Give your username, first name, and github to sugar')
-
-    parser.add_argument('start',
-                   help='Punch in to the clock, you are working now!')
-
-    parser.add_argument('stop',
-                   help='Punch out, but did you finish all your work?')
-
-    parser.add_argument('show',
-                   help='Show the amount of hours you worked by day or week')
-
-    parser.add_argument('clear', 
-                   help='Clear your work log history')
-
-    parser.add_argument('--version', action='version', version='1.0.0')
+setup_parser = subparsers.add_parser('setup')
+setup_parser.add_argument('setup',
+             help='Give your username, first name, and github to sugar')
+setup_parser.set_defaults(func=make_new_user)
 
 
-    usage = """usage: sugar.py [--help] <command> [<args>]
-            
+parser.add_argument('start',
+             help='Punch in to the clock, you are working now!')
 
-            Commands:
+parser.add_argument('stop',
+             help='Punch out, but did you finish all your work?')
 
-                sugar.py setup   add username and github account
-                sugar.py start   start the clock
-                sugar.py stop    stop the clock
-                sugar.py show    display all saved intervals
-                sugar.py clear   delete all saved intervals
-                'sugar.py <command> --help' to see how to use a command
+parser.add_argument('show',
+             help='Show the amount of hours you worked by day or week')
 
+parser.add_argument('clear', 
+             help='Clear your work log history')
 
-            Options:
-                -h --help     Show this screen.
-            """
+parser.add_argument('--version', action='version', version='1.0.0')
 
 
-    # options, arguments = parser.parse_args()
+usage = """usage: sugar.py [--help] <command> [<args>]
+      
 
-    
+      Commands:
+
+          sugar.py setup   add username and github account
+          sugar.py start   start the clock
+          sugar.py stop    stop the clock
+          sugar.py show    display all saved intervals
+          sugar.py clear   delete all saved intervals
+          'sugar.py <command> --help' to see how to use a command
+
+
+      Options:
+          -h --help     Show this screen.
+      """
+
+
+# options, arguments = parser.parse_args()
+
+
 
 
 if __name__ == '__main__':
-    main()
     app = Flask(__name__)
     connect_to_db(app)
 
+    args = parser.parse_args()
+    args.func(args) # call the default function
     
 
     db.session.close()
