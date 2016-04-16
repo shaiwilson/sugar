@@ -6,6 +6,8 @@ __license__ = 'MIT License. See LICENSE.'
 import sys
 from time import strftime
 from datetime import datetime
+# from flask import Flask
+# from flask.ext.sqlalchemy import SQLAlchemy
 
 # constants
 DB_DIR = ".sugar"
@@ -16,8 +18,27 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
+# db = SQLAlchemy()
+
+# def connect_to_db(app):
+#     """Connect the database to Flask app."""
+
+#     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/intervals'
+#     db.app = app
+#     db.init_app(app)
+
 def hello(args):
-    print('Hello, {0}!'.format(args.username))
+    """Add a new user and print confirmation.
+
+    Given a username add user to the
+    database and print a confirmation message.
+    """
+
+    # QUERY = """INSERT INTO Students VALUES (:username:)"""
+    # db_cursor = db.session.execute(QUERY, {'username': username})
+    # db.session.commit()
+
+    print('Hello, {0}! Welcome to sugar :-)'.format(args.username))
 
 
 def goodbye(args):
