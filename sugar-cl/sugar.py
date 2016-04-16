@@ -2,10 +2,9 @@
 
 from time import strftime
 from datetime import datetime
-import argparse
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
-
+import sys
 
 # constants
 DB_DIR = ".sugar"
@@ -156,14 +155,16 @@ setup_parser.add_argument('username',
 setup_parser.set_defaults(func=make_new_user)
 
 
+parser.add_argument('show',
+             help='Show the amount of hours you worked by day or week')
+
+
 parser.add_argument('start',
              help='Punch in to the clock, you are working now!')
 
 parser.add_argument('stop',
              help='Punch out, but did you finish all your work?')
 
-parser.add_argument('show',
-             help='Show the amount of hours you worked by day or week')
 
 parser.add_argument('clear', 
              help='Clear your work log history')
