@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 
+"""Sugar.
+
+A front-end for a database that allows users to log the amount of hours
+they work. """
+
 __author__ = 'Shai Wilson <sjwilson2@usfca.edu>'
 __license__ = 'MIT License. See LICENSE.'
 
 import sys
 from time import strftime
 from datetime import datetime
-# from flask import Flask
-# from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 # constants
 DB_DIR = ".sugar"
@@ -18,14 +25,13 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
-# db = SQLAlchemy()
 
-# def connect_to_db(app):
-#     """Connect the database to Flask app."""
+def connect_to_db(app):
+    """Connect the database to Flask app."""
 
-#     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/intervals'
-#     db.app = app
-#     db.init_app(app)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/intervals'
+    db.app = app
+    db.init_app(app)
 
 def hello(args):
     """Add a new user and print confirmation.
@@ -152,12 +158,17 @@ def get_parser():
 
 
 if __name__ == '__main__':
+    app = Flask(__name__)
+    connect_to_db(app)
     
     if sys.argv == 'start' or 'stop' :
         handle_input(sys.argv)
     else:
         args = get_parser().parse_args()
         args.func(args)  # call the default function
+
+
+    db.session.close()
 
 
 
