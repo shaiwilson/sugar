@@ -4,6 +4,17 @@ __author__ = 'Shai Wilson <sjwilson2@usfca.edu>'
 __license__ = 'MIT License. See LICENSE.'
 
 import sys
+from time import strftime
+from datetime import datetime
+
+# constants
+DB_DIR = ".sugar"
+DB_FILE = "intervals.db"
+DATE_DB_FORMAT = "%Y%m%d"
+DATE_PRINT_FORMAT = "%b %d, %Y"
+TIME_DB_FORMAT = "%H:%M"
+TIME_PRINT_FORMAT = "%I:%M %p"
+SECS_IN_HOUR = 60 * 60
 
 def hello(args):
     print('Hello, {0}!'.format(args.username))
@@ -12,23 +23,31 @@ def hello(args):
 def goodbye(args):
     print('Goodbye, {0}!'.format(args.timeframe))
 
-def handle_input():
-    """"""
+def punch_in():
+  """Given the start command, log timestamp information for the current work session."""
 
-    command = None
+  # first make sure they did not already punch in 
 
+  now = datetime.now()
+  current_time = now.strftime(TIME_DB_FORMAT)
+  current_date = now.strftime(DATE_DB_FORMAT)
+  print_format = now.strftime(TIME_PRINT_FORMAT)
+
+  # change "date " in intervals db to "date_time"
+  # QUERY = """INSERT INTO Intervals (date_time, start_time)
+  #          VALUES (:date_time, :start_time)"""
+
+  # db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'start_time': current_time})
+
+  print "Punched in at %s" %(print_format)
+
+def handle_input(args):
+    """ """
     
-    input_string = raw_input("HBA Database> ")
-    tokens = input_string.split()
-    command = tokens[0]
-    args = tokens[1:]
+    command = args[1]
 
-    if command == "student":
-        if len(args) != 1:
-            print "Invalid, please use: student [github name]"
-        else:
-            github = args[0]
-            get_student_by_github(github)
+    if command == "start":
+        punch_in()
 
     elif command == "new_student":
         if len(args) != 3:
@@ -145,7 +164,7 @@ def get_parser():
 if __name__ == '__main__':
     
     if sys.argv == 'start' or 'stop' :
-        handle_input()
+        handle_input(sys.argv)
     else:
         args = get_parser().parse_args()
         args.func(args)  # call the default function
