@@ -33,16 +33,16 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-def hello(args):
+def hello(username):
     """Add a new user and print confirmation.
 
     Given a username add user to the
     database and print a confirmation message.
     """
 
-    # QUERY = """INSERT INTO Students VALUES (:username:)"""
-    # db_cursor = db.session.execute(QUERY, {'username': username})
-    # db.session.commit()
+    QUERY = """INSERT INTO Students VALUES (:username:)"""
+    db_cursor = db.session.execute(QUERY, {'username': username})
+    db.session.commit()
 
     print('Hello, {0}! Welcome to sugar :-)'.format(args.username))
 
@@ -89,11 +89,12 @@ def punch_out():
 
   print "Punched out at %s" %(print_format)
 
-def setGoals(args):
+def setGoal(args):
+    return
 
 def clearLog(args):
     """Given the clear command, clear log information of work sessions."""
-
+    return
 
 def handle_input(args):
     """ """
@@ -129,7 +130,7 @@ def get_parser():
 
     goals_parser = subparsers.add_parser('goals', help= "Set your work productivity goals.")
     goals_parser.add_argument('goal', help='Give the amount of hours you would like to work today')
-    goals_parser.set_defaults(func=setGoals) 
+    goals_parser.set_defaults(func=setGoal) 
 
     clear_parser = subparsers.add_parser('clear', help= "Clear your sugar log.")
     clear_parser.add_argument('clear', help='')
@@ -161,14 +162,14 @@ if __name__ == '__main__':
     app = Flask(__name__)
     connect_to_db(app)
     
-    if sys.argv == 'start' or 'stop' :
-        handle_input(sys.argv)
-    else:
-        args = get_parser().parse_args()
-        args.func(args)  # call the default function
+    # if sys.argv == 'start' or 'stop' :
+    #     handle_input(sys.argv)
+    # else:
+    args = get_parser().parse_args()
+    args.func(args)  # call the default function
 
 
-    db.session.close()
+    # db.session.close()
 
 
 
