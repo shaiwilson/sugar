@@ -33,15 +33,15 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-def hello(username):
+def hello(args):
     """Add a new user and print confirmation.
 
     Given a username add user to the
     database and print a confirmation message.
     """
 
-    QUERY = """INSERT INTO Students VALUES (:username:)"""
-    db_cursor = db.session.execute(QUERY, {'username': username})
+    QUERY = """INSERT INTO Students VALUES (:username)"""
+    db_cursor = db.session.execute(QUERY, {'username': args.username})
     db.session.commit()
 
     print('Hello, {0}! Welcome to sugar :-)'.format(args.username))
