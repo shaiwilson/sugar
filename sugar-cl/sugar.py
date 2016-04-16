@@ -2,8 +2,8 @@
 
 """Sugar.
 
-A front-end for a database that allows users to log the amount of hours
-they work. """
+A command line tool with a psql database that allows users to log the amount 
+of hours they work. """
 
 __author__ = 'Shai Wilson <sjwilson2@usfca.edu>'
 __license__ = 'MIT License. See LICENSE.'
@@ -30,6 +30,7 @@ def connect_to_db(app):
     """Connect the database to Flask app."""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/intervals'
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
@@ -42,8 +43,7 @@ def format_db_time(db_time):
     return new_print_time
 
 def hello(args):
-    """Add a new user and print confirmation.
-
+    """
     Given a username add user to the
     database and print a confirmation message.
     """
@@ -70,14 +70,17 @@ def punch_in():
   information for the current work session."""
 
   # first make sure they did not already punch in 
-  start_time = """ SELECT start_time
+  start_time = """SELECT start_time
                 FROM Intervals 
                 ORDER BY id DESC 
                 LIMIT 1"""
+  db_cursor = db.session.execute(start_time).fetchone()
+  print db_cursor
 
   
-  if start_time == None:
-    print ("You already punched in at {0}! ").format(start_time)
+  if start_time != None:
+    # print_format = format_db_time(start_time)
+    print ("You already punched in at {0}! ").format(1)
     return
 
 
@@ -104,11 +107,23 @@ def punch_out():
   current_date = now.strftime(DATE_DB_FORMAT)
   print_format = now.strftime(TIME_PRINT_FORMAT)
 
+  db_date = """ SELECT date 
+                FROM Intervals 
+                ORDER BY id DESC 
+                LIMIT 1"""
+
+  start_time = """ SELECT start_time
+                FROM Intervals 
+                ORDER BY id DESC 
+                LIMIT 1"""
+
+  if start_time == None:
+    print "You're not punched in!"
+
   # why does end date include seconds in the punch out function?
   QUERY = """UPDATE Intervals SET end_time = current_time 
                 WHERE date = current_date"""
               
-
   db_cursor = db.session.execute(QUERY, {'date': current_date, 'end_time': current_time})
  
   db.session.commit()
