@@ -26,6 +26,7 @@ TIME_DB_FORMAT = "%H:%M"
 TIME_PRINT_FORMAT = "%I:%M %p"
 SECS_IN_HOUR = 60 * 60
 
+app = Flask(__name__)
 
 def connect_to_db(app):
     """Connect the database to Flask app."""
@@ -49,9 +50,15 @@ def hello(args):
     database and print a confirmation message.
     """
 
-    QUERY = """INSERT INTO Students VALUES (:username)"""
-    db_cursor = db.session.execute(QUERY, {'username': args.username})
+    # VERSION 2
+    new_user = Student(username=args.username)
+    db.session.add(new_user)
     db.session.commit()
+
+    # VERSION 1
+    # QUERY = """INSERT INTO Students VALUES (:username)"""
+    # db_cursor = db.session.execute(QUERY, {'username': args.username})
+    # db.session.commit()
 
     print('Hello, {0}! Welcome to sugar :-)'.format(args.username))
 
@@ -71,12 +78,23 @@ def punch_in():
   information for the current work session."""
 
   # first make sure they did not already punch in 
-  start_time = """SELECT start_time
-                FROM Intervals 
-                ORDER BY id DESC 
-                LIMIT 1"""
-  db_cursor = db.session.execute(start_time).fetchone()
-  print db_cursor
+
+  # start_time = Intervals.query.order_by(Intervals.start_time.desc()).limit(1)
+  # print start_time
+  # VERSION 1
+
+  # QUERY = """SELECT start_time
+  #          FROM intervals WHERE date = :current_time"""
+  # cursor = db.session.execute(QUERY, {'date': current_date})
+  # user_id, email, password = cursor.fetchone()
+
+
+  # start_time = """SELECT start_time
+  #               FROM Intervals 
+  #               ORDER BY id DESC 
+  #               LIMIT 1"""
+  # db_cursor = db.session.execute(start_time).fetchone()
+  # print db_cursor
 
   
   if start_time != None:
@@ -129,7 +147,7 @@ def punch_out():
  
   db.session.commit()
 
-  # print the amount of hours worked
+  # TODO: print the amount of hours worked
 
   print "Succesfully punched out at %s" %(print_format)
 
@@ -212,8 +230,8 @@ if __name__ == '__main__':
         args = get_parser().parse_args()
         args.func(args)  # call the default function
 
+    app.run()
 
-    db.session.close()
 
 
 
