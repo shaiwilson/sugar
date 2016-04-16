@@ -33,6 +33,11 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
+# helper functions
+def get_hours_worked(start_time, end_time):
+    return (end_time - start_time) / SECS_IN_HOUR
+
+
 def hello(args):
     """Add a new user and print confirmation.
 
@@ -83,12 +88,15 @@ def punch_out():
   print_format = now.strftime(TIME_PRINT_FORMAT)
 
   # change "date " in intervals db to "date_time"
-  # QUERY = """INSERT INTO Intervals (date_time, end_time)
-  #             VALUES (:date_time, :end_time)"""
+  QUERY = """UPDATE Intervals SET end_time = current_time 
+                WHERE date = current_date"""
+              
 
-  # db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'end_time': current_time})
+  db_cursor = db.session.execute(QUERY, {'date': current_date, 'end_time': current_time})
+ 
+  db.session.commit()
 
-  print "Punched out at %s" %(print_format)
+  print "Succesfully punched out at %s" %(print_format)
 
 def setGoal(args):
     return
