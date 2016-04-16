@@ -65,12 +65,13 @@ def punch_in():
   print_format = now.strftime(TIME_PRINT_FORMAT)
 
   # change "date " in intervals db to "date_time"
-  # QUERY = """INSERT INTO Intervals (date_time, start_time)
-  #          VALUES (:date_time, :start_time)"""
+  QUERY = """INSERT INTO Intervals (date, start_time)
+           VALUES (:date, :start_time)"""
 
-  # db_cursor = db.session.execute(QUERY, {'date_time': current_date, 'start_time': current_time})
+  db_cursor = db.session.execute(QUERY, {'date': current_date, 'start_time': current_time})
+  db.session.commit()
 
-  print "Punched in at %s" %(print_format)
+  print "Succesfully punched in at %s" %(print_format)
 
 def punch_out():
   """Given the stop command, log timestamp 
@@ -162,14 +163,14 @@ if __name__ == '__main__':
     app = Flask(__name__)
     connect_to_db(app)
     
-    # if sys.argv == 'start' or 'stop' :
-    #     handle_input(sys.argv)
-    # else:
-    args = get_parser().parse_args()
-    args.func(args)  # call the default function
+    if sys.argv == 'start' or 'stop' :
+        handle_input(sys.argv)
+    else:
+        args = get_parser().parse_args()
+        args.func(args)  # call the default function
 
 
-    # db.session.close()
+    db.session.close()
 
 
 
