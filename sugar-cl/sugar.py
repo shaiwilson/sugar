@@ -13,6 +13,7 @@ from time import strftime
 from datetime import datetime
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
+from model import *
 
 db = SQLAlchemy()
 

@@ -1,4 +1,4 @@
-"""Models and sugar project."""
+"""Model for sugar project."""
 
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -15,25 +15,25 @@ class Intervals(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
-    start_time = db.Column(db.DateTime, db.ForeignKey('intervals.start'))
+    start_time = db.Column(db.DateTime)
     end_time = db.Column(db.String(50), nullable=False)
 
 
 class Student(db.Model):
+    """A user of sugar; stored in a database."""
 
     __tablename__ = "students"
 
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
 
 
     intervals = db.relationship('Intervals', backref="student")
-
-    def __init__(self, username):
-        self.username = username
         
     def __repr__(self):
-        return '<User %r>' % self.username
+        """Provide helpful representation when printed."""
+
+        return "<User user_id=%s username=%s>" % (self.user_id, self.username)
 
 # End Part 1
 ##############################################################################
