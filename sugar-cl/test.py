@@ -78,6 +78,11 @@ def punch_out():
 
   print "Punched out at %s" %(print_format)
 
+def setGoals(args):
+
+def clearLog(args):
+
+
 def handle_input(args):
     """ """
     
@@ -89,38 +94,7 @@ def handle_input(args):
     elif command == "stop":
         punch_out()
 
-
-    elif command == "assign_grade":
-        if len(args) != 3:
-            print "Invalid, please use: assign_grade [github] [title] [grade]"
-        else:
-            github, title, grade = args
-            assign_grade(github, title, grade)
-
-    # NEW COMMANDS IN ADVANCED
-
-    elif command == "new_project":
-        # This is tricky, since the description could be many words --
-        # it isn't just a single word in args.
-        #
-        # So, they're in order of "title", "max_grade", "description"
-        # and description becomes everything after max_grade
-
-        if len(args) < 3:
-            print "Invalid, please use: new_project [title] [max-grade] [description]"
-        else:
-            title = args[0]
-            max_grade = int(args[1])
-            description = " ".join(args[2:])
-
-            make_new_project(title, description, max_grade)
-
-    elif command == "grades":
-        if len(args) != 1:
-            print "Invalid, please use: grades [github]"
-        else:
-            github = args[0]
-            get_grades_by_github(github)
+    
 
 def get_parser():
     """ Get parser object for script sugar.py """
@@ -133,24 +107,6 @@ def get_parser():
 
     parser.add_argument('--version', action='version', version='1.0.0')
 
-    # parser.add_argument('-s', 'start',
-    #                     action = 'store_true',
-    #                     default = False,
-    #                     dest='start_sugar',
-    #                     help='Punch in to the clock, you are working now!')
-
-    # parser.add_argument('-q', 'quit',
-    #                     action = 'store_true',
-    #                     default = False,
-    #                     dest='stop_sugar',
-    #                     help='Punch out, but did you finish all your work?')
-
-    # parser.add_argument('-c', 'clear',
-    #                     action = 'store_true',
-    #                     default = False,
-    #                     dest='clear_sugar',
-    #                     help='Clear your work log history')
-
     setup_parser = subparsers.add_parser('setup', help='Start sugar as a new user')
     setup_parser.add_argument('username', help='Give your username to sugar')  # add the name argument
     setup_parser.set_defaults(func=hello)  # set the default function to hello
@@ -158,6 +114,14 @@ def get_parser():
     show_parser = subparsers.add_parser('show', help='Show the amount of hours you worked by day or week')
     show_parser.add_argument('timeframe')
     show_parser.set_defaults(func=goodbye)
+
+    goals_parser = subparsers.add_parser('goals', help= "Set your work productivity goals.")
+    goals_parser.add_argument('goal', help='Give the amount of hours you would like to work today')
+    goals_parser.set_defaults(func=setGoals) 
+
+    clear_parser = subparsers.add_parser('clear', help= "Clear your sugar log.")
+    clear_parser.add_argument('clear', help='')
+    clear_parser.set_defaults(func=clearLog) 
 
 
     usage = """usage: sugar.py [--help] <command> [<args>]
@@ -167,9 +131,9 @@ def get_parser():
 
               sugar.py setup <command>   add username and github account
               sugar.py start             start the clock
-              sugar.py quit              stop the clock
-              sugar.py show <command>    display all saved intervals
-              sugar.py clear             delete all saved intervals
+              sugar.py stop              stop the clock
+              sugar.py show  <command>   display all saved intervals
+              sugar.py clear <command>   delete all saved intervals
               'sugar.py <command> --help' to see how to use a command
 
 
