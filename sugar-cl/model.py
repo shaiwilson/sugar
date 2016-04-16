@@ -24,11 +24,9 @@ class Student(db.Model):
 
     __tablename__ = "students"
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    student_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
 
-
-    intervals = db.relationship('Intervals', backref="student")
         
     def __repr__(self):
         """Provide helpful representation when printed."""
